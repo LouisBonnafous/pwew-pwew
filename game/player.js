@@ -1,11 +1,11 @@
-var Player = function(name, color, position, direction) {
+var Player = function(name, color, position, direction, speed) {
 
     this.name = name;
     this.position = position;
     this.life = 3;
     this.bullets = new Array();
     this.direction = direction;
-    this.speed = 0;
+    this.speed = speed;
 
     this.material = new THREE.MeshLambertMaterial({
         color: color,
@@ -21,6 +21,8 @@ var Player = function(name, color, position, direction) {
     THREE.GeometryUtils.merge(canon, sphere);
 
     this.graphic = new THREE.Mesh(sphere, this.material);
+    this.graphic.position.x = position.x;
+    this.graphic.position.y = position.y;
     this.graphic.position.z = 6;
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), this.direction);
 };
@@ -56,8 +58,8 @@ Player.prototype.displayInfo = function () {
 }
 
 Player.prototype.turnRight = function (angle) {
-    this.direction += angle;
-    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), angle);
+    this.direction -= angle;
+    this.graphic.rotateOnAxis(new THREE.Vector3(0,0,-1), angle);
 };
 
 Player.prototype.turnLeft = function (angle) {
@@ -65,14 +67,19 @@ Player.prototype.turnLeft = function (angle) {
     this.graphic.rotateOnAxis(new THREE.Vector3(0,0,1), angle);
 };
 
-Player.prototype.move = function () {
+Player.prototype.basicMove = function () {
     var moveTo = new THREE.Vector3(
-        this.speed * Math.cos(this.direction) + this.graphic.position.x,
-        this.speed * Math.sin(this.direction) + this.graphic.position.y,
+        this.speed * Math.cos(this.direction) + this.position.x,
+        this.speed * Math.sin(this.direction) + this.position.y,
         this.graphic.position.z
     );
 
     this.graphic.position = moveTo;
+    this.position = new THREE.Vector2(moveTo.x, moveTo.y);
+}
+
+Player.prototype.move = function () {
+    this.basicMove();
     if (this.speed > 0) {
         this.speed = this.speed - 0.04;
     }
