@@ -90,12 +90,22 @@ function player_collision(player, isEnemy)
         }
     }
     if ( y < 0 ) {
-        player.position -= y;
-        player.graphic.position.y -= y;
+        if (isEnemy) {
+            player.position.y = HEIGHT / 2 - 1;
+            player.graphic.position.y = HEIGHT / 2 - 1;
+        } else {
+            player.position.y -= y;
+            player.graphic.position.y -= y;
+        }
     }
     if ( y > HEIGHT ) {
-        player.position -= y - HEIGHT;
-        player.graphic.position.y -= y - HEIGHT;
+        if (isEnemy) {
+            player.position.y = - HEIGHT / 2 - 1;
+            player.graphic.position.y -= - HEIGHT / 2 - 1;
+        } else {
+            player.position.y = y - HEIGHT;
+            player.graphic.position.y -= y - HEIGHT;
+        }
     }
 
 }

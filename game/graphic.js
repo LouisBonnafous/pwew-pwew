@@ -28,7 +28,7 @@ function init()
     player1 = new Player("player1", 0xffff00, new THREE.Vector2(0, 0), 0, 0);
     scene.add(player1.graphic);
 
-    player2 = new Player("player2", 0xff00ff, new THREE.Vector2(120, 38), 0, 3);
+    player2 = new Player("player2", 0xff00ff, new THREE.Vector2(120, 38), 180, 3);
     scene.add(player2.graphic);
 
     light1 = new Light("sun", 0xffffff, "0,0,350");
